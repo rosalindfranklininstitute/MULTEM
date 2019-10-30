@@ -545,7 +545,7 @@ namespace mt
 				}
 
 				// sort amorphous layers
-				auto sort_z_0 = [](Amorp_Lay_Info<T> &v1, Amorp_Lay_Info<T> &v2){ return v1.z_0<v2.z_0; };
+				auto sort_z_0 = [](const Amorp_Lay_Info<T> &v1, const Amorp_Lay_Info<T> &v2){ return v1.z_0<v2.z_0; };
 				std::sort(amorp_lay_info.begin(), amorp_lay_info.end(), sort_z_0);
 
 				// set amorphous layer type

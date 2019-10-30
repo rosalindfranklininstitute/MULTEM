@@ -3569,6 +3569,10 @@ namespace mt
 	{
 		using T = Value_type<TVector>;
 
+    if (vr_first == vr_last) {
+      throw std::runtime_error("vr_first == vr_last");
+    }
+
 		dv = ::fmax(dv, T(0.1));
 
 		TVector vr(vr_first, vr_last);

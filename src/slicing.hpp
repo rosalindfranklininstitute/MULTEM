@@ -207,6 +207,10 @@ namespace mt
 
 				TVector_r z_plane_sli = z_plane;
 
+        if (z_plane_sli.size() == 0) {
+          throw std::runtime_error("z_plane.size() must be > 0");
+        }
+
 				z_slice.resize(z_plane_sli.size()+1);
 				z_slice[0] = z_plane_sli[0]-0.5*get_spacing(0, z_plane_sli, atoms.dz);
 				for(auto iz=1; iz<z_slice.size()-1; iz++)
