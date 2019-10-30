@@ -33,7 +33,7 @@
           MATLABMEX="-DMATLAB_MEX_FILE"
 
           ARCH_FLAGS="XXX_ARCH_FLAGS"
-          NVCCFLAGS="--std=c++11--default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
+          NVCCFLAGS="--default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
           
           CXXFLAGS="--compiler-bindir=$CLANG_COMPILER --compiler-options=-fno-common,-arch,$ARCHS,-mmacosx-version-min=$SDKVER,-fexceptions,-isysroot,$ISYSROOT,-stdlib=libc++"
           INCLUDE="-I&quot;$MATLABROOT/extern/include&quot; -I&quot;$MATLABROOT/simulink/include&quot; -I&quot;$MATLABROOT/toolbox/distcomp/gpu/extern/include/&quot;"
@@ -75,11 +75,11 @@
                             <cmdReturns name="which nvcc" />
                             <fileExists name="/usr/local/cuda/bin/nvcc" />
                         </or>
-                        <cmdReturns name="$$/nvcc --version | egrep -E 'release 8.0' > /dev/null && echo $$/nvcc" />
+                        <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
                     </and>
                     <fileExists name="/Developer/NVIDIA/CUDA-8.0/bin/nvcc" /> <!-- Search the default install location -->
                 </or>
-                <cmdReturns name="$$/nvcc --version | egrep -E 'release 8.0' > /dev/null && echo $$/nvcc" />
+                <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
             </and>
         </NVCC>
     <!--Check for faulty DEVELOPER_DIR environment variable -->

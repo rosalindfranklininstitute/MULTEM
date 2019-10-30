@@ -22,7 +22,7 @@ function [] = MEX(option, m_file, src, varargin)
         elseif(ismac)
             CUDA_PATH = '/Developer/NVIDIA/CUDA-8.0';
         else
-            CUDA_PATH = '/usr/local/cuda-8.0';
+            CUDA_PATH = '/dls_sw/apps/cuda/9.1/';
         end    
     end
     
@@ -58,15 +58,15 @@ function [] = MEX(option, m_file, src, varargin)
         ' -gencode=arch=compute_50,code=&#92;&quot;sm_50,compute_50&#92;&quot;'...
         ' -gencode=arch=compute_60,code=&#92;&quot;sm_60,compute_60&#92;&quot;'];		
 
-    ARCH_FLAGS = MULTI_CARD;
+    ARCH_FLAGS = SINGLE_CARD;%MULTI_CARD;
 
-    if(ispc)
-        mex_cuda_filename = 'mex_CUDA_win64.xml';
-    elseif(ismac)
-        mex_cuda_filename = 'mex_CUDA_maci64.xml';
-    else
-        mex_cuda_filename = 'mex_CUDA_glnxa64.xml';  
-    end 
+    %if(ispc)
+    %    mex_cuda_filename = 'mex_CUDA_win64.xml';
+    %elseif(ismac)
+    %    mex_cuda_filename = 'mex_CUDA_maci64.xml';
+    %else
+    mex_cuda_filename = 'mex_CUDA_glnxa64.xml';  
+    %end 
     
        %%%%%%%%%%%%% read template mex_cuda file %%%%%%%%%%%%%%%
     mex_cuda_file_in = [pathstr, filesep, 'matlab_functions', filesep, mex_cuda_filename];
@@ -120,9 +120,9 @@ function [] = MEX(option, m_file, src, varargin)
     LIBRARY = ['-L"',CUDA_LIB_PATH,'" ',CUDA_LIBS,' -L"',FFTW_LIB_PATH,'" ',FFTW_LIBS,' -L"',BLAS_LAPACK_LIB_PATH,'" ',BLAS_LAPACK_LIBS];
 
     if (strcmpi(option, 'release'))
-        mex_comand = 'mex -v -largeArrayDims';
+        mex_comand = 'mex -v -largeArrayDims CXXFLAGS="\$CXXFLAGS -std=c++11"';
     else
-        mex_comand = 'mex -v -g -largeArrayDims'; 
+        mex_comand = 'mex -v -g -largeArrayDims CXXFLAGS="\$CXXFLAGS -std=c++11"'; 
     end
 
     OUTDIR = ['-outdir ..', filesep, 'mex_bin'];

@@ -94,6 +94,10 @@ tic;
 output_multislice = il_MULTEM(system_conf, input_multislice); 
 toc;
 
+disp('Saving')
+save('input.mat', 'input_multislice')
+save('output.mat', 'output_multislice')
+
 figure(1);
 for i=1:length(output_multislice.data)
     imagesc(output_multislice.data(i).m2psi_tot);

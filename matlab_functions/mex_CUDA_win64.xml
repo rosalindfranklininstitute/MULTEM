@@ -37,7 +37,7 @@
           INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\simulink\include&quot;"   
      
           ARCH_FLAGS="XXX_ARCH_FLAGS"
-		  NVCC_FLAGS="--std=c++11 --default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
+		  NVCC_FLAGS="--default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
           
           COMPILER="nvcc"
           COMPFLAGS="--compiler-options=/Zp8,/GR,/bigobj,/W3,/EHs,/nologo,/MD $NVCC_FLAGS"          
@@ -173,7 +173,7 @@
                         </and>
                     </or>
                     <!-- cmdReturns will replace all backslashes with a single backslash unless they are the very first characters -->
-                    <cmdReturns name="$$\nvcc --version | findstr /c:&quot;release 8.0&quot; > NUL && echo $$" />
+                    <cmdReturns name="$$\nvcc --version | findstr /c:&quot;release 9.1&quot; > NUL && echo $$" />
                 </and>
                 <!-- For local paths, duplicate the same syntax in order to execute nvcc --version with quotes around the path, to handle spaces -->
                 <and>
@@ -194,7 +194,7 @@
                             <fileExists name="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nvcc.exe" />
                         </and>
                     </or>
-                    <cmdReturns name="&quot;$$\nvcc&quot; --version | findstr /c:&quot;release 8.0&quot; > NUL && echo $$" />
+                    <cmdReturns name="&quot;$$\nvcc&quot; --version | findstr /c:&quot;release 9.1&quot; > NUL && echo $$" />
                 </and>
             </or>
         </CUDA_BIN_PATH>

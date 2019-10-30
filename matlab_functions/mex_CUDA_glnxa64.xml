@@ -34,10 +34,10 @@
           INCLUDE="-I&quot;$MATLABROOT/extern/include&quot; -I&quot;$MATLABROOT/simulink/include&quot;" 
        
           ARCH_FLAGS="XXX_ARCH_FLAGS"
-		  NVCC_FLAGS="--std=c++11 --default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
+		  NVCC_FLAGS="--default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
           
           CXX="$NVCC"
-          CXXFLAGS="--compiler-options=-fexceptions,-fPIC,-fno-omit-frame-pointer,-pthread $NVCC_FLAGS"          
+          CXXFLAGS="--compiler-options=-fexceptions,-fPIC,-fno-omit-frame-pointer,-pthread $NVCC_FLAGS "          
           DEFINES="--compiler-options=-D_GNU_SOURCE,$MATLABMEX"
           CXXOPTIMFLAGS="-O2 -DNDEBUG"
           CXXDEBUGFLAGS="-g"
@@ -89,11 +89,11 @@
                             <cmdReturns name="which nvcc" />
                             <fileExists name="/usr/local/cuda/bin/nvcc" />
                         </or>
-                        <cmdReturns name="$$/nvcc --version | egrep -E 'release 8.0' > /dev/null && echo $$/nvcc" />
+                        <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
                     </and>
                     <fileExists name="/usr/local/cuda-8.0/bin/nvcc" /> <!-- Search the default install location -->
                 </or>
-                <cmdReturns name="$$/nvcc --version | egrep -E 'release 8.0' > /dev/null && echo $$/nvcc" />
+                <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
             </and>
         </NVCC>
         <GCC>
