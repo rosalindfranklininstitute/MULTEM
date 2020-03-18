@@ -3116,6 +3116,27 @@ namespace mt
 			T operator()(const U &x) const { return ::fmax(vm, x.real()); }
 		};
 
+
+		template <class T>
+		struct assign_imag
+		{
+			template <class U>
+			DEVICE_CALLABLE
+			T operator()(const U &x) const { return x.imag(); }
+		};
+
+		template <class T>
+		struct assign_max_imag
+		{
+			const T vm;
+			assign_max_imag(T vm_i = T()): vm(vm_i){}
+
+			template <class U>
+			DEVICE_CALLABLE
+			T operator()(const U &x) const { return ::fmax(vm, x.imag()); }
+		};
+
+
 		template <class T>
 		struct scale
 		{
@@ -3409,6 +3430,31 @@ namespace mt
 		else
 		{
 			thrust::transform(M_i.begin(), M_i.end(), M_o.begin(), functor::assign_real<value_type>());
+		}
+	}
+	
+  template <class TVector_c, class TVector_r>
+	enable_if_complex_vector_and_real_vector<TVector_c, TVector_r, void>
+	assign_imag(TVector_c &M_i, TVector_r &M_o)
+	{
+		using value_type = Value_type<TVector_r>;
+
+		thrust::transform(M_i.begin(), M_i.end(), M_o.begin(), functor::assign_imag<value_type>());
+	}
+
+	template <class TVector_c, class TVector_r>
+	enable_if_complex_vector_and_real_vector<TVector_c, TVector_r, void>
+	assign_imag(TVector_c &M_i, TVector_r &M_o, Value_type<TVector_r> M_v)
+	{
+		using value_type = Value_type<TVector_r>;
+
+		if(M_v>0)
+		{
+			thrust::transform(M_i.begin(), M_i.end(), M_o.begin(), functor::assign_max_imag<value_type>(0));
+		}
+		else
+		{
+			thrust::transform(M_i.begin(), M_i.end(), M_o.begin(), functor::assign_imag<value_type>());
 		}
 	}
 
