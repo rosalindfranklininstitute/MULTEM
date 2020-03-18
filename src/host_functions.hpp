@@ -1129,6 +1129,17 @@ namespace mt
 		stream.set_grid(grid_2d.nxh, grid_2d.nyh);
 		stream.exec_matrix(host_device_detail::fft2_shift<TGrid, TVector>, grid_2d, M_io);
 	}
+	
+  template <class TGrid, class TVector>
+	enable_if_host_vector<TVector, void>
+	fft2_shift(TGrid &grid_2d, TVector &M_io)
+	{
+    for (auto ix = 0; ix < grid_2d.nxh; ++ix) {
+      for (auto iy = 0; iy < grid_2d.nyh; ++iy) {
+		    host_device_detail::fft2_shift<TGrid, TVector>(ix, iy, grid_2d, M_io);
+      }
+    }
+	}
 
 	template <class TGrid, class TVector>
 	enable_if_host_vector<TVector, Value_type<TVector>>
