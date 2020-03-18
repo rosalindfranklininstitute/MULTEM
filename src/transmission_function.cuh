@@ -31,6 +31,14 @@
 
 namespace mt
 {
+
+	template <class T, eDevice dev>
+  class PotentialFunction {
+  public:
+
+    virtual void operator()(double z_0, double z_E, mt::Vector<T, dev> &) = 0;
+  };
+
 	template <class T, eDevice dev>
 	class Transmission_Function: public Projected_Potential<T, dev>
 	{
@@ -39,7 +47,11 @@ namespace mt
 			using T_c = complex<T>;
 			using size_type = std::size_t;
 
-			Transmission_Function(): Projected_Potential<T, dev>(), fft_2d(nullptr){}
+			Transmission_Function(): Projected_Potential<T, dev>(), fft_2d(nullptr), potential_function(nullptr) {}
+
+      void set_potential_function(PotentialFunction<T, dev> *function) {
+        potential_function = function;
+      }
 
 			void set_input_data(Input_Multislice<T_r> *input_multislice_i, Stream<dev> *stream_i, FFT<T_r, dev> *fft2_i)
 			{
@@ -97,6 +109,14 @@ namespace mt
 				else
 				{
 					Projected_Potential<T, dev>::operator()(islice, this->V_0);
+          
+          // If we have an external function to compute potential
+          if (potential_function) {
+            double z_0 = this->slicing.slice[islice].z_0;
+            double z_e = this->slicing.slice[islice].z_e;
+            potential_function->operator()(z_0, z_e, this->V_0);  
+          }
+
 					//this->operator()(islice, this->V_0);
 					trans(this->input_multislice->Vr_factor(), this->V_0, trans_0);
 				}
@@ -221,6 +241,7 @@ namespace mt
 			Vector<Vector<T_r, dev>, e_host> Vp_v;
 
 			FFT<T_r, dev> *fft_2d;
+      PotentialFunction<T,dev> *potential_function;
 	};
 
 } // namespace mt
