@@ -32,7 +32,6 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <device_functions.h>
 #include <cufft.h>
 
 #include "cgpu_fcns.cuh"
@@ -1528,6 +1527,15 @@ namespace mt
 	template <class TGrid, class TVector>
 	enable_if_device_vector<TVector, void>
 	fft2_shift(Stream<e_device> &stream, TGrid &grid_2d, TVector &M_io)
+	{
+		auto grid_bt = grid_2d.cuda_grid_h();
+
+		device_detail::fft2_shift<TGrid, typename TVector::value_type><<<grid_bt.Blk, grid_bt.Thr>>>(grid_2d, M_io); 	
+	}
+	
+  template <class TGrid, class TVector>
+	enable_if_device_vector<TVector, void>
+	fft2_shift(TGrid &grid_2d, TVector &M_io)
 	{
 		auto grid_bt = grid_2d.cuda_grid_h();
 
