@@ -66,6 +66,10 @@ namespace mt
 
 				wave_function.set_input_data(input_multislice, stream, fft_2d);
 			}
+      
+      void set_potential_function(PotentialFunction<T, dev> *function) {
+        wave_function.set_potential_function(function);
+      }
 
 			template <class TOutput_multislice>
 			void operator()(TOutput_multislice &output_multislice)
