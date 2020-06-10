@@ -420,6 +420,11 @@ namespace mt
 				{
 					auto iZ = get_Z(Z[iatoms])-1;
 					Z_unique[iZ] = iZ + 1;
+          // MERGED FROM UPSTREAM
+          // if (Z[iatoms] < 1) {
+          //   throw std::runtime_error("Invalid Z");
+          // }
+					// Z_unique[Z[iatoms]-1] = Z[iatoms];
 				}
 
 				Z_unique.erase(std::remove_if(Z_unique.begin(), Z_unique.end(), [](int v){ return v<=0; }), Z_unique.end());
