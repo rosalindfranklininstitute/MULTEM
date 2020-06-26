@@ -98,6 +98,11 @@ namespace mt
 			void CTF_TEM(const eTemporal_Spatial_Incoh &temporal_spatial_incoh, Vector<T_c, dev> &fpsi, Vector<T_r, dev> &m2psi_tot)
 			{
 				mt::apply_CTF(*stream, input_multislice->grid_2d, input_multislice->obj_lens, 0, 0, fpsi, psi);
+        thrust::transform(
+            psi.begin(), 
+            psi.end(), 
+            psi.begin(), 
+            mt::functor::scale<T_c>(exp(T_c(0, input_multislice->phase_shift))));
 				fft_2d->inverse(psi);
 				mt::square(*stream, psi, m2psi_tot);
 			}
@@ -122,6 +127,11 @@ namespace mt
 				}
 
 				mt::apply_PCTF(*stream, input_multislice->grid_2d, input_multislice->obj_lens, fpsi, psi);
+        thrust::transform(
+            psi.begin(), 
+            psi.end(), 
+            psi.begin(), 
+            mt::functor::scale<T_c>(exp(T_c(0, input_multislice->phase_shift))));
 				fft_2d->inverse(psi);
 				mt::square(*stream, psi, m2psi_tot);
 
