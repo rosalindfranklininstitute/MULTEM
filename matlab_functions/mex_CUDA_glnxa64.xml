@@ -4,7 +4,7 @@
     ShortName="nvcc"
     HostCompiler="g++"    
     Manufacturer="NVIDIA"
-    Version="8.0"
+    Version="XXX_CUDA_VERSION"
     Language="CUDA"
     Priority="A"
     Location="$NVCC" >
@@ -69,7 +69,7 @@
                 
     </vars>
     <locationFinder>
-        <NVCC diagnostic="Version 8.0 of the CUDA toolkit could not be found. If installed, set MW_NVCC_PATH environment variable to location of nvcc compiler." >
+        <NVCC diagnostic="Version XXX_CUDA_VERSION of the CUDA toolkit could not be found. If installed, set MW_NVCC_PATH environment variable to location of nvcc compiler." >
             <and>
                 <or>
                     <and> <!-- Search for nvcc in standard locations, favoring user variable MW_NVCC_PATH, but reject if it isn't the supported version -->
