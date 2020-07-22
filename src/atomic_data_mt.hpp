@@ -521,9 +521,9 @@ namespace mt
 			{
 				// if(!thrust::is_sorted(z.begin(), z.end()));
 				auto first = thrust::make_zip_iterator(thrust::make_tuple(Z.begin(), x.begin(), y.begin(), z.begin(), sigma.begin(), occ.begin(), region.begin(), charge.begin()));
-				auto last = thrust::make_zip_iterator(thrust::make_tuple(Z.end(), x.end(), y.end(), z.end(), sigma.end(), occ.end(), region.end(), charge.end()));
+				//auto last = thrust::make_zip_iterator(thrust::make_tuple(Z.end(), x.end(), y.end(), z.end(), sigma.end(), occ.end(), region.end(), charge.end()));
 
-				thrust::sort(first, last, sort_atoms_by_z());
+				thrust::sort_by_key(z.begin(), z.end(), first);
 			}
 
 			// max z value within a region
