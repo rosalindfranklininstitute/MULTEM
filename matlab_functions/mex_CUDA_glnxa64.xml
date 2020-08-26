@@ -4,7 +4,7 @@
     ShortName="nvcc"
     HostCompiler="g++"    
     Manufacturer="NVIDIA"
-    Version="XXX_CUDA_VERSION"
+    Version="XXX_CUDA_VER"
     Language="CUDA"
     Priority="A"
     Location="$NVCC" >
@@ -26,12 +26,12 @@
           LinkerPathFormatter="-L%s"
     />
     <vars
-          CMDLINE1="$CXX -c $CXXFLAGS $OPTIM $DEFINES $INCLUDE $SRC -o $OBJ"
+          CMDLINE1="$CXX -c $NVCC_FLAGS $CXXFLAGS $OPTIM $DEFINES $INCLUDE $SRC -o $OBJ"
           CMDLINE2="$LDXX $LDFLAGS $LDTYPE $LINKOPTIM $LINKEXPORTVER $OBJS $CXXLIBS $LINKLIBS -o $EXE"
           CMDLINE3="rm -f $OBJ"
           
           MATLABMEX="-DMATLAB_MEX_FILE"
-          INCLUDE="-I&quot;$MATLABROOT/extern/include&quot; -I&quot;$MATLABROOT/simulink/include&quot;" 
+          INCLUDE="-I&quot;$MATLABROOT/extern/include&quot;" 
        
           ARCH_FLAGS="XXX_ARCH_FLAGS"
 		  NVCC_FLAGS="--default-stream per-thread --expt-extended-lambda $ARCH_FLAGS"
@@ -49,7 +49,8 @@
           LDDEBUGFLAGS="-g"
           
           LINKEXPORT="-Wl,--version-script,&quot;$MATLABROOT/extern/lib/$ARCH/mexFunction.map&quot;"
-          LINKLIBS="-Wl,-rpath-link,$MATLABROOT/bin/$ARCH -L&quot;$MATLABROOT/bin/$ARCH&quot; -lmx -lmex -lmat -lm -lstdc++"
+          LINKEXPORTVER="-Wl,--version-script,&quot;$MATLABROOT/extern/lib/$ARCH/c_exportsmexfileversion.map&quot;"
+          LINKLIBS="-Wl,-rpath-link,$MATLABROOT/bin/$ARCH -L&quot;$MATLABROOT/bin/$ARCH&quot; -lmx -lmex -lmat -lm -lstdc++ "
   
           OBJEXT=".o"
           LDEXT=".mexa64"
@@ -103,5 +104,15 @@
             <cmdReturns name="g++ -print-file-name=libstdc++.so"
                         diagnostic="GCC appears to be installed, but supporting C++ libraries were not found.  You must first install the gcc-c++ package, or similiar, to complete this action."/>
         </CPPLIB_DIR>
+        <VER>
+            <cmdReturns name="g++ -dumpversion"/>
+        </VER>
+        <GCCDIR>
+            <cmdReturns name="which g++" />
+            <dirExists name="$$/../" />
+        </GCCDIR>
+        <GCC_TARGET>
+            <cmdReturns name="g++ -dumpmachine" />
+        </GCC_TARGET>
     </locationFinder>
 </config>
