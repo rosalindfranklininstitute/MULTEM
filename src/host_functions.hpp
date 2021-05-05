@@ -36,7 +36,7 @@
 #include "lin_alg_def.cuh"
 #include "atom_data.hpp"
 
-#include "host_device_functions.cuh"
+/* #include "host_device_functions.cuh" */
 #include "quadrature.hpp"
 
 namespace mt

@@ -34,8 +34,8 @@
 #include <cuda_runtime.h>
 #include <cufft.h>
 
-#include "host_device_functions.cuh"
-#include "host_functions.hpp"
+/* #include "host_device_functions.cuh" */
+/* #include "host_functions.hpp" */
 
 #define reduce_array_256(tid, sum, Mshare)						\
 	{															\

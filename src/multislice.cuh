@@ -25,9 +25,9 @@
 #include "traits.cuh"
 #include "input_multislice.cuh"
 #include "output_multislice.hpp"
-#include "host_functions.hpp"
-#include "device_functions.cuh"
-#include "host_device_functions.cuh"
+/* #include "host_functions.hpp" */
+/* #include "device_functions.cuh" */
+/* #include "host_device_functions.cuh" */
 #include "energy_loss.cuh"
 #include "wave_function.cuh"
 #include "timing.cuh"
