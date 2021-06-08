@@ -3161,7 +3161,7 @@ namespace mt
 		{
 			template <class U>
 			DEVICE_CALLABLE
-			T operator()(const U &x) const { return norm(x); }
+			T operator()(const U &x) const { return ::norm(x); }
 		};
 
 		template <class T>

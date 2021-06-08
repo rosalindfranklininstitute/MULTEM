@@ -75,11 +75,11 @@
                             <cmdReturns name="which nvcc" />
                             <fileExists name="/usr/local/cuda/bin/nvcc" />
                         </or>
-                        <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
+                        <cmdReturns name="$$/nvcc --version | egrep -E 'release XXX_CUDA_VERSION' > /dev/null && echo $$/nvcc" />
                     </and>
                     <fileExists name="/Developer/NVIDIA/CUDA-XXX_CUDA_VERSION/bin/nvcc" /> <!-- Search the default install location -->
                 </or>
-                <cmdReturns name="$$/nvcc --version | egrep -E 'release 9.1' > /dev/null && echo $$/nvcc" />
+                <cmdReturns name="$$/nvcc --version | egrep -E 'release XXX_CUDA_VERSION' > /dev/null && echo $$/nvcc" />
             </and>
         </NVCC>
     <!--Check for faulty DEVELOPER_DIR environment variable -->
