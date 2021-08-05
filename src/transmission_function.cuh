@@ -59,6 +59,23 @@ namespace mt
 				fft_2d = fft2_i;
 
 				trans_0.resize(this->input_multislice->grid_2d.nxy());
+        
+        if (this->input_multislice->static_B_factor > 0) {
+          static_B_factor_filter.resize(this->input_multislice->grid_2d.nxy());
+          T_r B = this->input_multislice->static_B_factor;
+          auto grid_2d = this->input_multislice->grid_2d;
+          thrust::counting_iterator<size_t> indices(0);
+          thrust::transform(
+              indices,
+              indices + static_B_factor_filter.size(),
+              static_B_factor_filter.begin(),
+              [B, grid_2d] DEVICE_CALLABLE (size_t index) {
+                auto ix = index / grid_2d.ny;
+                auto iy = index - ix * grid_2d.ny;
+                auto g2 = grid_2d.g2_shift(ix, iy);
+                return exp(-B * g2 / 4.0);
+              });
+        }
 
 				if(!this->input_multislice->slice_storage)
 				{
@@ -79,6 +96,7 @@ namespace mt
 				{
 					memory_slice.resize_vector(this->input_multislice->grid_2d.nxy(), trans_v);
 				}
+
 			}
 
 			void trans(T_r w, Vector<T_r, dev> &V0_i, Vector<T_c, dev> &Trans_o)
@@ -117,6 +135,11 @@ namespace mt
             potential_function->operator()(z_0, z_e, this->V_0);  
           }
 
+          // If static B factor is set then do the B factor blurring
+          if (this->input_multislice->static_B_factor > 0) {
+            apply_static_B_factor(this->V_0); 
+          }
+
 					//this->operator()(islice, this->V_0);
 					trans(this->input_multislice->Vr_factor(), this->V_0, trans_0);
 				}
@@ -135,6 +158,24 @@ namespace mt
 				trans(islice, trans_0);
 				mt::copy_to_host(output_multislice.stream, trans_0, output_multislice.trans[0]);
 			}
+
+      void apply_static_B_factor(Vector<T_r, dev> &V0) {
+        if (V0.size() != static_B_factor_filter.size()) {
+          throw std::runtime_error("Inconsistent array sizes");
+        }
+        Vector<T_c, dev> temp(V0.begin(), V0.end());
+        fft_2d->forward(temp);
+        thrust::transform(
+            temp.begin(),
+            temp.end(),
+            static_B_factor_filter.begin(),
+            temp.begin(),
+            thrust::multiplies<T_c>());
+        fft_2d->inverse(temp);
+        mt::assign_real(temp, V0);
+
+        /* mt::fft2_shift(grid_2d_, fft_data_); */
+      }
 
 			void move_atoms(const int &fp_iconf)
 			{
@@ -241,6 +282,7 @@ namespace mt
 			Vector<Vector<T_r, dev>, e_host> Vp_v;
 
 			FFT<T_r, dev> *fft_2d;
+      Vector<T_r, dev> static_B_factor_filter;
       PotentialFunction<T,dev> *potential_function;
 	};
 

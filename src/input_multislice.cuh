@@ -471,6 +471,7 @@ namespace mt
 		int pn_seed; 										// Random seed(frozen phonon)
 		int pn_nconf; 										// true: single phonon configuration, false: number of frozen phonon configurations
 		int fp_iconf_0;										// initial configuration
+    double static_B_factor;
 
 		Atom_Data<T> atoms; 								// atoms
 		bool is_crystal;
@@ -537,7 +538,7 @@ namespace mt
 
 		Input_Multislice() :simulation_type(eTEMST_EWRS), pn_model(ePM_Still_Atom), interaction_model(eESIM_Multislice),
 			potential_slicing(ePS_Planes), potential_type(ePT_Lobato_0_12), fp_dist(1), pn_seed(300183),
-			pn_single_conf(false), pn_nconf(1), fp_iconf_0(1), spec_rot_theta(0), spec_rot_u0(0, 0, 1),
+			pn_single_conf(false), pn_nconf(1), fp_iconf_0(1), static_B_factor(0), spec_rot_theta(0), spec_rot_u0(0, 0, 1),
 			spec_rot_center_type(eRPT_geometric_center), spec_rot_center_p(1, 0, 0), illumination_model(eIM_Partial_Coherent),
 			temporal_spatial_incoh(eTSI_Temporal_Spatial), thick_type(eTT_Whole_Spec),
 			operation_mode(eOM_Normal), pn_coh_contrib(false), slice_storage(false), reverse_multislice(false),
@@ -564,6 +565,7 @@ namespace mt
 			pn_seed = input_multislice.pn_seed;
 			pn_single_conf = input_multislice.pn_single_conf;
 			pn_nconf = input_multislice.pn_nconf;
+      static_B_factor = input_multislice.static_B_factor;
 
 			atoms = input_multislice.atoms;
 			is_crystal = input_multislice.is_crystal;
@@ -630,6 +632,8 @@ namespace mt
 			pn_nconf = (!is_frozen_phonon()) ? 1 : max(1, pn_nconf);
 
 			fp_iconf_0 = (!is_frozen_phonon()) ? 1 : (pn_single_conf) ? pn_nconf : 1;
+
+      static_B_factor = std::max(0.0, static_B_factor);
 
 			islice = max(0, islice);
 
