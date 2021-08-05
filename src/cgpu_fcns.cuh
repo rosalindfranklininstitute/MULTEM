@@ -2024,7 +2024,7 @@ namespace mt
 				c = c_Pi*lens.ti_iehwgd*lens.lambda*g2;
 				T_r temp_inc = 0.5*c*c;
 
-				c = c_Pi*lens.si_theta_c*(lens.c_30*lens.lambda2*g2-lens.c_10);
+				c = c_Pi*lens.si_theta_c*(lens.c_30*lens.lambda2*g2+lens.c_10);
 				T_r spa_inc = c*c*g2;
 
 				T_r st_inc = exp(-(spa_inc+temp_inc)/u)/sqrt(u);
