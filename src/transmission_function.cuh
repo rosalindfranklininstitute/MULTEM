@@ -72,7 +72,7 @@ namespace mt
               [B, grid_2d] DEVICE_CALLABLE (size_t index) {
                 int ix = index / grid_2d.ny;
                 int iy = index - ix * grid_2d.ny;
-                T_r g2 = grid_2d.g2(ix, iy);
+                T_r g2 = grid_2d.g2_shift(ix, iy);
                 return exp(-B * g2 / 4.0);
               });
         }
