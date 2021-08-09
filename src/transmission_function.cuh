@@ -70,9 +70,9 @@ namespace mt
               indices + static_B_factor_filter.size(),
               static_B_factor_filter.begin(),
               [B, grid_2d] DEVICE_CALLABLE (size_t index) {
-                auto ix = index / grid_2d.ny;
-                auto iy = index - ix * grid_2d.ny;
-                auto g2 = grid_2d.g2_shift(ix, iy);
+                int ix = index / grid_2d.ny;
+                int iy = index - ix * grid_2d.ny;
+                T_r g2 = grid_2d.g2(ix, iy);
                 return exp(-B * g2 / 4.0);
               });
         }
@@ -160,21 +160,38 @@ namespace mt
 			}
 
       void apply_static_B_factor(Vector<T_r, dev> &V0) {
+
+        // Check the size of the arrays
         if (V0.size() != static_B_factor_filter.size()) {
           throw std::runtime_error("Inconsistent array sizes");
         }
+
+        // Initialise a temporary complex array
         Vector<T_c, dev> temp(V0.begin(), V0.end());
+       
+        // Get the normalization constant
+        T_r size = V0.size();
+      
+        // Convolve with the B factor filter
         fft_2d->forward(temp);
         thrust::transform(
             temp.begin(),
             temp.end(),
             static_B_factor_filter.begin(),
             temp.begin(),
-            thrust::multiplies<T_c>());
+            [] DEVICE_CALLABLE (T_c x, T_r y) {
+              return x * y;
+            });
         fft_2d->inverse(temp);
-        mt::assign_real(temp, V0);
 
-        /* mt::fft2_shift(grid_2d_, fft_data_); */
+        // Copy the real component and normalize
+        thrust::transform(
+            temp.begin(), 
+            temp.end(), 
+            V0.begin(), 
+            [size] DEVICE_CALLABLE (T_c x) {
+              return x.real() / size;
+            });
       }
 
 			void move_atoms(const int &fp_iconf)
