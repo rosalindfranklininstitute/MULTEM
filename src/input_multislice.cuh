@@ -543,7 +543,7 @@ namespace mt
 			temporal_spatial_incoh(eTSI_Temporal_Spatial), thick_type(eTT_Whole_Spec),
 			operation_mode(eOM_Normal), pn_coh_contrib(false), slice_storage(false), reverse_multislice(false),
 			mul_sign(1), E_0(300), lambda(0), theta(0), phi(0), nrot(1), Vrl(c_Vrl), nR(c_nR), iw_type(eIWT_Plane_Wave),
-			is_crystal(false), islice(0), dp_Shift(false), phase_shift(0) {};
+			is_crystal(false), islice(0), dp_Shift(false), phase_shift(0), cdl_var_type(eLVT_off) {};
 
 		template <class TInput_Multislice>
 		void assign(TInput_Multislice &input_multislice)
