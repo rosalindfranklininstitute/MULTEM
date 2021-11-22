@@ -204,10 +204,23 @@ namespace mt
 					if(memory_slice.is_potential())
 					{
 						Projected_Potential<T, dev>::operator()(islice, Vp_v[islice]);
+            
+            if (potential_function) {
+              double z_0 = this->slicing.slice[islice].z_0;
+              double z_e = this->slicing.slice[islice].z_e;
+              potential_function->operator()(z_0, z_e, Vp_v[islice]);  
+            }
 					}
 					else if(memory_slice.is_transmission())
 					{
 						Projected_Potential<T, dev>::operator()(islice, this->V_0);
+
+            if (potential_function) {
+              double z_0 = this->slicing.slice[islice].z_0;
+              double z_e = this->slicing.slice[islice].z_e;
+              potential_function->operator()(z_0, z_e, this->V_0);  
+            }
+
 						trans(this->input_multislice->Vr_factor(), this->V_0, trans_v[islice]);
 					}
 				}
