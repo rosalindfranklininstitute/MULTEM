@@ -97,6 +97,7 @@ namespace mt
 				thick = get_thick(m_input_multislice, m_z_slice, *m_atoms_r);
 
 				slice = get_slicing(m_input_multislice, m_z_slice, thick, *m_atoms);
+        
 			}
 
 			TVector_r z_plane;
@@ -167,8 +168,8 @@ namespace mt
 				}
 
 				std::vector<double> zt2(z_plane.begin(), z_plane.end());
-	auto bb_ali = !atoms.amorp_lay_info.empty();
-	if(bb_ali && (fabs(atoms.z_min-z_plane.front())>z_eps))
+        auto bb_ali = !atoms.amorp_lay_info.empty();
+        if(bb_ali && (fabs(atoms.z_min-z_plane.front())>z_eps))
 				{
 					T dz_b = get_spacing(1, z_plane);
 					auto amorp = atoms.amorp_lay_info.front();
@@ -176,7 +177,7 @@ namespace mt
 					z_plane.insert(z_plane.begin(), z_plane_top.begin(), z_plane_top.end());
 				}
 
-	 if(bb_ali && (fabs(z_plane.back()-atoms.z_max)>z_eps))
+        if(bb_ali && (fabs(z_plane.back()-atoms.z_max)>z_eps))
 				{
 					T dz_b = get_spacing(z_plane.size()-1, z_plane);
 					auto amorp = atoms.amorp_lay_info.back();
@@ -194,7 +195,7 @@ namespace mt
 			TVector_r get_z_slice(ePotential_Slicing pot_sli, TVector_r &z_plane, Atom_Data<T> &atoms)
 			{
 				TVector_r z_slice;
-
+    
 				if((pot_sli!=ePS_dz_Sub) && (z_plane.size() == 1))
 				{
 					z_slice.resize(2);
