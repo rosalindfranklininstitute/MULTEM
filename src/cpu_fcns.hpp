@@ -38,7 +38,7 @@
 
 #include "cgpu_fcns.cuh"
 #include "quadrature.hpp"
-#include <mex.h>
+//#include <mex.h>
 
 namespace mt
 {
