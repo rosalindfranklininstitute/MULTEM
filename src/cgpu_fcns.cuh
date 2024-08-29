@@ -3149,14 +3149,6 @@ namespace mt
 			T operator()(const U &x) const { return w*x; }
 		};
 
-    // FIXME I THINK THIS IS FIXED IN CUDA 10.0
-    template <class T>
-    DEVICE_CALLABLE
-    T norm(const thrust::device_reference< thrust::complex<T> >&x) {
-      thrust::complex<T> xx = (thrust::complex<T>)x;
-      return norm(xx);    
-    }
-
 		template <class T>
 		DEVICE_CALLABLE
 		T norm(const thrust::device_reference< thrust::complex<T> >&x) 
