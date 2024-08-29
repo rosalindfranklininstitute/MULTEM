@@ -1,7 +1,7 @@
 % output_multislice = input_multem.ilc_multem perform TEM simulation
 % Exit wave real space (EWRS) simulation
 % All parameters of the input_multem structure are explained in ilm_dflt_input_multem()
-% Copyright 2021 Ivan Lobato <Ivanlh20@gmail.com>
+% Copyright 2023 Ivan Lobato <Ivanlh20@gmail.com>
 
 clear; clc;
 addpath([fileparts(pwd) filesep 'mex_bin'])
@@ -64,7 +64,7 @@ input_multem.temporal_spatial_incoh = 1;         % 1: Temporal and Spatial, 2: T
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% Incident wave %%%%%%%%%%%%%%%%%%%%%%%%%%
 input_multem.iw_type = 2;   % 1: Plane_Wave, 2: Convergent_wave, 3:User_Define, 4: auto
-input_multem.iw_psi = 0;    % user define incident wave
+input_multem.iw_psi = read_psi_0_multem(input_multem.nx, input_multem.ny);    % user define incident wave
 input_multem.iw_x = input_multem.spec_lx/2;     % x position 
 input_multem.iw_y = input_multem.spec_ly/2;     % y position
 
@@ -101,7 +101,8 @@ input_multem.obj_lens_zero_defocus_plane = 0;   % It will be only used if obj_le
 
 clear ilc_multem;
 tic;
-output_multislice = input_multem.ilc_multem; 
+output_multislice = input_multem.ilc_multem;
+% output_multislice = ilc_multem(input_multem.system_conf, input_multem);
 toc;
 
 figure(1);

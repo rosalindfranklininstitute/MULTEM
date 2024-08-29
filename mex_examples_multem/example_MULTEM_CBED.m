@@ -1,7 +1,7 @@
 % output_multislice = input_multem.ilc_multem perform TEM simulation
 % Convergent beam electron diffraction (CBED) simulation
 % All parameters of the input_multem structure are explained in ilm_dflt_input_multem()
-% Copyright 2021 Ivan Lobato <Ivanlh20@gmail.com>
+% Copyright 2023 Ivan Lobato <Ivanlh20@gmail.com>
 
 clear; clc;
 addpath([fileparts(pwd) filesep 'mex_bin'])
@@ -49,8 +49,8 @@ input_multem.thick_type = 1;                     % eTT_Whole_Spec = 1, eTT_Throu
 input_multem.thick = 0;   % Array of thickes (�)
 
 %%%%%%%%%%%%%%%%%%%%%% x-y sampling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-input_multem.nx = 1024;
-input_multem.ny = 1024;
+input_multem.nx = 2048;
+input_multem.ny = 2048;
 input_multem.bwl = 0;                            % Band-width limit, 1: true, 0:false
 
 %%%%%%%%%%%%%%%%%%%% Microscope parameters %%%%%%%%%%%%%%%%%%%%%%%%%%

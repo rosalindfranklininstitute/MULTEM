@@ -1,4 +1,4 @@
-% Copyright 2021 Ivan Lobato <Ivanlh20@gmail.com>
+% Copyright 2023 Ivan Lobato <Ivanlh20@gmail.com>
 
 clear; clc;
 addpath([fileparts(pwd) filesep 'mex_bin'])
@@ -27,7 +27,7 @@ na = 4; nb = 4; nc = 4; ncu = 2; rmsd_3d = 0.25;
 [input_multem.spec_atoms, input_multem.spec_lx...
 , input_multem.spec_ly, input_multem.spec_lz...
 , a, b, c, input_multem.spec_dz] = Au001_xtl(na, nb, nc, ncu, rmsd_3d);
-
+input_multem.spec_dz = 10000;
 input_multem.nx = 2048; 
 input_multem.ny = 2048;
 
@@ -39,14 +39,14 @@ for islice = 1:nslice
     input_multem.islice = islice;
     
     input_multem.system_conf.device = 1;                        % eD_CPU = 1, eD_GPU = 2
-    input_multem.system_conf.precision = 1;                     % eP_Float = 1, eP_double = 2
+    input_multem.system_conf.precision = 2;                     % eP_Float = 1, eP_double = 2
     tic;
     clear ilc_projected_potential;
     ouput_multislice_1 = input_multem.ilc_projected_potential;
     toc;
     
     input_multem.system_conf.device = 2;                        % eD_CPU = 1, eD_GPU = 2
-    input_multem.system_conf.precision = 1;                     % eP_Float = 1, eP_double = 2
+    input_multem.system_conf.precision = 2;                     % eP_Float = 1, eP_double = 2
     tic;
     clear ilc_projected_potential;
     ouput_multislice_2 = input_multem.ilc_projected_potential;
