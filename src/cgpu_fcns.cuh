@@ -2037,6 +2037,85 @@ namespace mt
 				fPsi_o[ixy] = 0;
 			}
 		}
+		
+    template <class TGrid, class TVector_c>
+		DEVICE_CALLABLE FORCE_INLINE 
+		void apply_PCTF_HO(const int &ix, const int &iy, const TGrid &grid_2d, const Lens<Value_type<TGrid>> &lens, 
+		TVector_c &fPsi_i, TVector_c &fPsi_o)
+		{
+			using T_r = Value_type<TGrid>;
+
+			const T_r c_Pi = 3.141592653589793238463;
+
+			int ixy = grid_2d.ind_col(ix, iy);
+			T_r g2 = grid_2d.g2_shift(ix, iy);
+			T_r gx = grid_2d.gx_shift(ix);
+			T_r gy = grid_2d.gy_shift(iy);
+
+			if((lens.g2_min <= g2) && (g2 < lens.g2_max))
+			{			
+        T_r lambda = lens.lambda;
+        T_r lambda2 = lens.lambda2;
+        T_r lambda3 = lens.lambda2 * lens.lambda; 
+        T_r lambda4 = lens.lambda2 * lens.lambda2;
+
+				T_r g4 = g2*g2;
+				T_r g6 = g4*g2;
+        T_r g = sqrt(g2);
+        T_r g3 = g2*g;
+        T_r g5 = g4*g;
+        T_r phi = atan2(gy, gx);
+
+        T_r c_10_xy = lens.c_10;
+        T_r c_12_xy = lens.c_12 * sin(2*(phi - lens.phi_12));
+        T_r c_21_xy = lens.c_21 * lambda * g * sin(1*(phi - lens.phi_21));
+        T_r c_23_xy = lens.c_23 * lambda * g * sin(3*(phi - lens.phi_23));
+        T_r c_30_xy = lens.c_30 * lambda2 * g2;
+        T_r c_32_xy = lens.c_32 * lambda2 * g2 * sin(2*(phi - lens.phi_32));
+        T_r c_34_xy = lens.c_34 * lambda2 * g2 * sin(4*(phi - lens.phi_34)); 
+        T_r c_41_xy = lens.c_41 * lambda3 * g3 * sin(1*(phi - lens.phi_41)); 
+        T_r c_43_xy = lens.c_43 * lambda3 * g3 * sin(3*(phi - lens.phi_43)); 
+        T_r c_45_xy = lens.c_45 * lambda3 * g3 * sin(5*(phi - lens.phi_45)); 
+        T_r c_50_xy = lens.c_50 * lambda4 * g4;
+        T_r c_52_xy = lens.c_52 * lambda4 * g4 * sin(2*(phi - lens.phi_52)); 
+        T_r c_54_xy = lens.c_54 * lambda4 * g4 * sin(4*(phi - lens.phi_54)); 
+        T_r c_56_xy = lens.c_56 * lambda4 * g4 * sin(6*(phi - lens.phi_56));
+
+        T_r chi = -c_Pi * lambda * g2 * (
+          c_10_xy + c_12_xy + 
+          (c_21_xy + c_23_xy) * 2/3 + 
+          (c_30_xy + c_32_xy + c_34_xy) * 1/2 + 
+          (c_41_xy + c_43_xy + c_45_xy) * 2/5 + 
+          (c_50_xy + c_52_xy + c_54_xy + c_56_xy) * 1/3
+        );
+				
+        T_r c = c_Pi*lens.si_theta_c*lens.ti_iehwgd;
+				T_r u = 1.0 + c*c*g2;
+
+				c = c_Pi*lens.ti_iehwgd*lens.lambda*g2;
+
+				T_r temp_inc = 0.25*c*c;
+
+				c = c_Pi*lens.si_theta_c*(
+          c_10_xy + c_12_xy + 
+          c_21_xy + c_23_xy + 
+          c_30_xy + c_32_xy + c_34_xy + 
+          c_41_xy + c_43_xy + c_45_xy + 
+          c_50_xy + c_52_xy + c_54_xy + c_56_xy 
+        );
+
+				T_r spa_inc = c*c*g2;
+
+				T_r st_inc = exp(-(spa_inc+temp_inc)/u)/sqrt(u);
+
+				fPsi_o[ixy] = fPsi_i[ixy]*polar(st_inc, chi);
+			}
+			else
+			{
+				fPsi_o[ixy] = 0;
+			}
+		}
+
 
 		template <class TGrid>
 		DEVICE_CALLABLE FORCE_INLINE 

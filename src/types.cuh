@@ -148,7 +148,7 @@ namespace mt
 	/******************************Microscope effects*****************************/
 	enum eIllumination_Model
 	{
-		eIM_Coherent = 1, eIM_Partial_Coherent = 2, eIM_Trans_Cross_Coef = 3, eIM_Full_Integration = 4, eIM_none = 5
+		eIM_Coherent = 1, eIM_Partial_Coherent = 2, eIM_Trans_Cross_Coef = 3, eIM_Full_Integration = 4, eIM_none = 5, eIM_Partial_Coherent_Higher_Order = 6,
 	};
 
 	/******************************Spatial and temporal***************************/

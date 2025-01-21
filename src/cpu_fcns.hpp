@@ -1300,6 +1300,15 @@ namespace mt
 		stream.set_grid(grid_2d.nx, grid_2d.ny);
 		stream.exec_matrix(host_device_detail::apply_PCTF<TGrid, TVector_c>, grid_2d, lens, fPsi_i, fPsi_o);
 	}
+	
+  template <class TGrid, class TVector_c>
+	enable_if_host_vector<TVector_c, void>
+		apply_PCTF_HO(Stream<e_host> &stream, TGrid &grid_2d, Lens<Value_type<TGrid>> &lens, TVector_c &fPsi_i, TVector_c &fPsi_o)
+	{
+		stream.set_n_act_stream(grid_2d.nx);
+		stream.set_grid(grid_2d.nx, grid_2d.ny);
+		stream.exec_matrix(host_device_detail::apply_PCTF_HO<TGrid, TVector_c>, grid_2d, lens, fPsi_i, fPsi_o);
+	}
 
 	template <class TGrid, class TVector_c>
 	enable_if_host_vector<TVector_c, void>

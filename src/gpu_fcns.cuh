@@ -773,6 +773,19 @@ namespace mt
 				host_device_detail::apply_PCTF(ix, iy, grid_2d, lens, fPsi_i, fPsi_o);
 			}
 		}
+		
+    // Partially coherent transfer function, linear image model and weak phase_components object
+		template <class TGrid, class T>
+		__global__ void apply_PCTF_HO(TGrid grid_2d, Lens<Value_type<TGrid>> lens, rVector<T> fPsi_i, rVector<T> fPsi_o)
+		{
+			int iy = threadIdx.x + blockIdx.x*blockDim.x;
+			int ix = threadIdx.y + blockIdx.y*blockDim.y;
+
+			if((ix < grid_2d.nx) && (iy < grid_2d.ny))
+			{
+				host_device_detail::apply_PCTF_HO(ix, iy, grid_2d, lens, fPsi_i, fPsi_o);
+			}
+		}
 
 		// sum over the detector
 		template <class T>
